@@ -1,0 +1,33 @@
+{
+  "name": "open-wechat-jump",
+  "version": "1.0.0",
+  "description": "jjjjjjj",
+  "repository" : { "type" : "git",
+      "url" : "https://github.com/Xanthorapedia/open-t1t.git"
+  },
+  "main": "public/lib/game.js",
+  "author": "Dasong Gao <gds1226@hotmail.com>",
+  "license": "GPL-3.0",
+  "scripts": {
+    "app": "node build/app.js",
+    "babel": "babel ./public/ -o ./build/app.js",
+    "browser": "browserify public/test/ground-color.js -o ./build/app.js -t babelify"
+  },
+  "devDependencies": {
+    "browserify": "",
+    "babelify": "",
+    "babel-preset-env": "",
+    "babel-core": ""
+  },
+  "dependencies": {
+    "es6-tween": "",
+    "pngjs": "",
+    "three": "",
+    "three-software-renderer": ""
+  },
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  }
+}

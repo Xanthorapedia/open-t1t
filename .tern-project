@@ -1,0 +1,19 @@
+{
+  "ecmaVersion": 6,
+  "loadEagerly": [
+    "public/**/*.js",
+    "node_modules/three/build/*.js",
+    "node_modules/es6-tween/bundled/*.js"
+  ],
+  "plugins": {
+    "es_modules": {},
+    "node": {},
+    "doc_comment": {
+      "fullDocs": true,
+      "strong": true
+    },
+    "commonjs": {}
+  },
+  "libs": [],
+  "dontLoad": []
+}

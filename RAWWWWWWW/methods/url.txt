@@ -1,0 +1,1 @@
+wget https://servicewechat.com/weapp/release/wx7c8d593b2c3a7703/5.wxapkg
