@@ -4,7 +4,7 @@
  * Audio manager class
  */
 
-import * as RES from "./resource";
+import * as RES from "./config.js";
 // var check = void 0;
 /**
  * Responsible for playing audio.
@@ -19,13 +19,13 @@ class AudioManager {
     // check = this;
     this.game = game;
     this.musicPool = Object.keys(RES.AUDIO);
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    var AudioContext = window.AudioContext = window.AudioContext || window.webkitAudioContext;
     // yes, they mean the same thing :)
     var esta = this;
     // creates audio source for each piece of sound
     this.musicPool.forEach(function(name) {
       // but no "this" anymore in this callback
-      esta[name] = createInnerAudioContext(new AudioContext(), RES.AUDIO[name]);
+      esta[name] = createInnerAudioContext(AudioContext ? new AudioContext() : null, RES.AUDIO[name]);
 		})
 
     // set specific proerties
@@ -93,6 +93,7 @@ class AudioManager {
 function createInnerAudioContext(context, audioURL) {
   // creates an extendable audio source "thing"
   var src = {
+    _buffer: null,
     begin: 0,                     // where to start playing
     onended: null,                // what happens right before playing?
     onplay: null,                 // and right after?
@@ -100,8 +101,16 @@ function createInnerAudioContext(context, audioURL) {
       src.begin = where;
     },
     play: function() {            // play!
+      if (!context)
+        return;
+      src = Object.assign(context.createBufferSource(), src);
+      src.buffer = src._buffer;
+      src.connect(context.destination);
       src.onplay && src.onplay();
       src.start(src.begin);
+    },
+    stop: function() {            // stop!
+      src._proto_.stop();
     },
     onPlay:  function(handler) {  // setters
       src.onplay  = handler;
@@ -110,6 +119,8 @@ function createInnerAudioContext(context, audioURL) {
       src.onended = handler;
     },
   }
+  if (!context)
+    return src;
   // requests audio file from url
   var request = new XMLHttpRequest();
   request.open("GET", audioURL, true);
@@ -121,7 +132,7 @@ function createInnerAudioContext(context, audioURL) {
     context.decodeAudioData(request.response, function(buffer) {
       src = Object.assign(context.createBufferSource(), src);
       // src is now also a BuffereSourceNode
-      src.buffer = buffer;
+      src._buffer = src.buffer = buffer;
       src.loop = false;
       src.connect(context.destination);
       // console.log(check)

@@ -121,5 +121,5 @@ const cylinder_shadow = new THREE.MeshBasicMaterial({
 const REPORTERTIMEOUT = 60001
 
 export { COLORS, BOTTLE, PARTICLE, GAME, WAVE, CAMERA, AUDIO, BLOCK, FRUSTUMSIZE,
-	cylinder_shadow, desk_shadow, shadow, grayMaterial, numberMaterial
+	loader, cylinder_shadow, desk_shadow, shadow, grayMaterial, numberMaterial
 };

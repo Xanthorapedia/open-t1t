@@ -1,8 +1,13 @@
+/**
+ * module[39]
+ */
+
 import * as THREE from "three";
 import * as RES from "./resource";
 
-import Ground from "./ground"
-import AudioManager from "./audio-manager"
+import Ground from "./ground";
+import AudioManager from "./audio-manager";
+import ComboRing from "./combo-ring";
 var a = 0;
 class Game {
   constructor(options) {
@@ -80,16 +85,48 @@ class Game {
     this.ground = new Ground();
     this.ground.obj.position.z = -84;
     this.camera.add(this.ground.obj)
-    // waves
-    this.waves = [];
-    // for (a = 0; a < 4; ++a) {
-		// 					var n = new l.default;
-		// 					this.waves.push(n), n.obj.visible = !1, this.scene.add(n.obj)
-		// 				}
     // combo rings
+    this.waves = [];
+    for (var i = 0; i < 4; i++) {
+		    var ring = new ComboRing();
+				this.waves.push(ring);
+        ring.obj.visible = false;
+        this.scene.add(ring.obj);
+		}
     var comboRingMaterial = new THREE.MeshBasicMaterial({
 			color: RES.COLORS.cream
 		});
+    this.combo = new THREE.Mesh(
+      new THREE.CircleGeometry(.6, 40), comboRingMaterial
+    );
+    this.combo.name = "combo";
+    this.combo.position.x = -50;
+    this.combo.rotation.x = -Math.PI / 2;
+    this.scene.add(this.combo);
+    if (this.renderer.shadowMap.enabled) {
+      this.shadowTarget = new THREE.Mesh(
+        new THREE.PlaneGeometry(.1, .1), comboRingMaterial
+      );
+      this.shadowTarget.visible = false;
+      this.shadowTarget.name = "shadowTarget";
+      this.scene.add(this.shadowTarget);
+    }
+    // // blocks
+    // this.currentBlock = new s.default(0);
+    // this.initNextBlock = this.nextBlock = new s.default(1);
+    // this.nextBlock.obj.position.x = 20;
+    // // "i"
+    // this.bottle = new u.default;
+    // this.bottle.obj.position.set(-10, -RES.BLOCK.height / 2, 0);
+    // this.scene.add(this.bottle.obj);
+    // // tutorial setup
+    // if (this.guider) {
+    //   this.bottle.obj.position.set(-11, 50, 0);
+    //   this.camera.position.x -= 19;
+    //   setTimeout(function() {
+  	// 		t.bottle.showup();
+    //   }, 800);
+    // }
   }
 }
 

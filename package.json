@@ -2,28 +2,32 @@
   "name": "open-wechat-jump",
   "version": "1.0.0",
   "description": "jjjjjjj",
-  "repository" : { "type" : "git",
-      "url" : "https://github.com/Xanthorapedia/open-t1t.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xanthorapedia/open-t1t.git"
   },
   "main": "public/lib/game.js",
   "author": "Dasong Gao <gds1226@hotmail.com>",
   "license": "GPL-3.0",
   "scripts": {
-    "app": "node build/app.js",
-    "babel": "babel ./public/ -o ./build/app.js",
-    "browser": "browserify public/test/ground-color.js -o ./build/app.js -t babelify"
+    "browser": "browserify ./public/lib/t1t.js -o ./build/browser.js -t babelify",
+    "sim-lib": "babel ./public/lib/*.js -d ./build",
+    "sim-web": "browserify ./index.js -o ./build/sim-web.js -t babelify"
   },
   "devDependencies": {
-    "browserify": "",
+    "babel-cli": "^6.26.0",
+    "babel-core": "",
+    "babel-preset-env": "^1.7.0",
     "babelify": "",
-    "babel-preset-env": "",
-    "babel-core": ""
+    "browserify": ""
   },
   "dependencies": {
-    "es6-tween": "",
-    "pngjs": "",
-    "three": "",
-    "three-software-renderer": ""
+    "canvas": "^1.6.11",
+    "gl": "^4.0.4",
+    "jimp": "^0.2.28",
+    "jsdom": "^11.11.0",
+    "three": "^0.94.0",
+    "websocket": "^1.0.26"
   },
   "babel": {
     "presets": [

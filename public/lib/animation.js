@@ -6,6 +6,11 @@
 
 import Easing from "./easing"
 
+var skipAnim = false;
+function setSkipAnim(value) {
+  skipAnim = value;
+}
+
 // number of animations ever requeted
 var nRequestedAnim = -1;
 // and the lowerbound (exclusive) of valid animation IDs
@@ -38,6 +43,13 @@ function TweenAnimation(from, to, duration, method, callback) {
     return window.console && console.error("from和to两个参数必须且为数值"), 0;
 
   if (!Easing) return window.console && console.error("缓动算法函数缺失"), 0;
+
+  // just jump to final status
+  if (skipAnim) {
+    isFunction(method) && method(to, true);
+    isFunction(callback) && callback(to, true);
+    return;
+  }
 
 	var animation = {
 		duration: 300,
@@ -105,7 +117,7 @@ function TweenAnimation(from, to, duration, method, callback) {
 					frameInDuration > fpd && animID > minValidID &&
 					animation.callback(to, true);
 			}
-		}()
+		}();
 	} else console.error('没有找到名为"' + animation.easing + '"的动画算法')
 };
 
@@ -131,7 +143,14 @@ customAnimation.to = function(toChange, duration, changeTo) {
 	// if has delay property, update
 	// if has ease or onComplete property, set that property
 	// if is other properties, register TweenAnimation
-	for (var prop in changeTo)
+	for (var prop in changeTo) {
+    // directly sets to final status
+    if (skipAnim) {
+      if (prop !== "delay" && prop !== "onComplete" && prop !== "ease")
+        toChange[prop] = changeTo[prop];
+      changeTo.onComplete && changeTo.onComplete();
+      continue;
+    }
 		"delay" === prop ? tDelay = changeTo[prop] :
 		"onComplete" === prop || "ease" === prop || setTimeout(function(prop) {
 			// this anonymous (register) function is called after tDelay seconds
@@ -145,6 +164,7 @@ customAnimation.to = function(toChange, duration, changeTo) {
 				});
 			}
 		}(prop), 1e3 * tDelay);
+  }
 };
 
-export { customAnimation, TweenAnimation }
+export { customAnimation, TweenAnimation, setSkipAnim }
